@@ -1,0 +1,22 @@
+{
+  "role": {
+    "name": "NDSO::SalesOrder.accessWithoutGrant",
+    "object_privileges": [
+      {
+        "name": "NDSO::SalesOrder.NDSO.active_data",
+        "type": "TABLE",
+        "privileges": ["SELECT"]
+      },
+      {
+        "name": "NDSO::SalesOrder.NDSO.change_log",
+        "type": "TABLE",
+        "privileges": ["SELECT"]
+      },
+      {
+        "name": "NDSO::SalesOrder.EXTRACT",
+        "type": "PROCEDURE",
+        "privileges": ["EXECUTE"]
+      }
+    ]
+  }
+}

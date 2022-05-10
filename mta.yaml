@@ -1,0 +1,89 @@
+_schema-version: '2.0'
+ID: XSA_TESTMBT_DWF
+description: XSA_TESTMBT_DWF
+version: 0.0.1
+
+modules:
+ - name:  XSA_TESTMBT_DWF-DWF
+   type: dwf
+#   parameters:
+#      app-name: XSA_TESTMBT_DWF-DWF
+   path: DWF
+   requires:
+#      - name: XSA_TESTMBT_DWF-uaa
+      - name: XSA_TESTMBT_DWF-dws
+   properties:
+     memory: 256M
+
+ - name: XSA_TESTMBT_DWF-Backend
+   type: nodejs
+#   parameters:
+#      app-name: XSA_TESTMBT_DWF-Backend
+   path: Backend
+   requires:
+#      - name: XSA_TESTMBT_DWF-uaa
+      - name: XSA_TESTMBT_DWF-container
+      - name: XSA_TESTMBT_DWF-dws
+   properties:
+     memory: 512M
+     API_END_POINT: "${xs-api-url}"
+#     SAP_JWT_TRUST_ACL: "[{\"clientid\":\"*\",\"identityzone\":\"*\"}]"
+   provides:
+    - name:  XSA_TESTMBT_DWF-Backend
+      properties:
+       service_url: ${default-url}
+
+ - name: XSA_TESTMBT_DWF-Database
+   type: hdb
+#   parameters:
+#      app-name: XSA_TESTMBT_DWF-Database
+   path: Database
+   requires:
+    - name: XSA_TESTMBT_DWF-container
+      properties:
+        TARGET_CONTAINER: '~{hdi-container-name}'
+   properties:
+     memory: 256M
+     HDI_DEPLOY_OPTIONS: { "auto_undeploy": true }
+
+resources:
+# - name: XSA_TESTMBT_DWF-uaa
+#   type: com.sap.xs.uaa
+#   parameters:
+#     service-name: XSA_TESTMBT_DWF-uaa
+#     service-plan: space
+#     config:
+#         xsappname: XSA_TESTMBT_DWF
+#         scopes:
+#          - name: $XSAPPNAME.TOE
+#            description: access for TOE
+#            grant-as-authority-to-apps:
+#             - dwf-toe
+#             - dwf-runtime
+#            granted-apps:
+#             - dwf-toe
+#             - dwf-runtime
+#         authorities:
+#          - $ACCEPT_GRANTED_AUTHORITIES
+#         role-templates:
+#           - name: User
+#             description: Access API
+#             scope-references:
+#              - $XSAPPNAME.TOE
+
+ - name: XSA_TESTMBT_DWF-dws
+   properties:
+      dwf-edw-client-name: ${service-name}
+#      dwf-edw-client-name: XSA_TESTMBT_DWF-dws
+#   parameters:
+#      service-name: XSA_TESTMBT_DWF-dws
+   type: com.sap.xs.dwf-edw-client
+ - name: XSA_TESTMBT_DWF-container
+   properties:
+      hdi-container-name: ${service-name}
+#      hdi-container-name: XSA_TESTMBT_DWF-container
+   type: com.sap.xs.hdi-container
+   parameters:
+     service-keys:
+       - name: dwf-monitor
+#     service-name: XSA_TESTMBT_DWF-container
