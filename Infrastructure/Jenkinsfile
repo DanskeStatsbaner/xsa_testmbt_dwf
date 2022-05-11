@@ -1,2 +1,2 @@
 @Library('jenkinssharedlibrary') _
-daPipelineTest 'xsa_testmbt_dwf'
+daPipelineTest2 'xsa_testmbt_dwf'

@@ -1,2 +1,0 @@
-@Library('jenkinssharedlibrary') _
-daPipelineTest 'xsa_testmbt_dwf'
